@@ -150,7 +150,7 @@ export const INITIAL_CONTRIBUTOR_ARTICLES: NewsArticle[] = [
 Ketua paguyuban warga, Ibu Tri Wahyuni, menuturkan: "Awalnya kami hanya memilah sampah organik untuk kompos dan plastik untuk kerajinan. Sekarang dengan timbangan digital dan tabungan bank sampah, warga bisa menukar poin daur ulang menjadi saldo listrik dan sembako bulanan."
 
 Selain menyelesaikan problem sanitasi lingkungan, listrik surya yang dipasang di balai warga dan penerangan gang mampu beroperasi mandiri tanpa membebani kas RT. Inisiatif mandiri ini kini menjadi rujukan studi tiru berbagai komunitas dari kota tetangga.`,
-    url: 'https://kabarglobal.portal/berita/kontributor-sukamaju',
+    url: 'https://infocepat.portal/berita/kontributor-sukamaju',
     imageUrl: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1200&q=80',
     source: 'Kabar Komunitas (Kontributor)',
     category: 'contributor',
@@ -173,7 +173,7 @@ Selain menyelesaikan problem sanitasi lingkungan, listrik surya yang dipasang di
 Inisiatif ini dirintis oleh paguyuban pedagang muda yang mendampingi para pedagang sepuh membuka rekening bank dan memahami keamanan transaksi digital.
 
 "Dulu sering kerepotan cari uang kembalian atau resiko uang palsu. Sekarang pembeli dari kota tinggal scan, uang langsung masuk dompet pedagang. Petani sayur juga lebih tenang karena catatan penjualannya rapi," jelas Mas Danang, pegiat ekonomi desa setempat.`,
-    url: 'https://kabarglobal.portal/berita/kontributor-pasar-qris',
+    url: 'https://infocepat.portal/berita/kontributor-pasar-qris',
     imageUrl: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=1200&q=80',
     source: 'Jurnalis Warga (Kontributor)',
     category: 'contributor',
@@ -196,7 +196,7 @@ Inisiatif ini dirintis oleh paguyuban pedagang muda yang mendampingi para pedaga
 Koordinator relawan mangrove menuturkan bahwa hutan bakau yang mulai rimbun kini mengundang kembali burung kuntul putih, kepiting bakau, dan ikan belanak yang sempat menghilang.
 
 "Kami tidak bisa hanya pasrah menunggu daratan kami habis terkikis abrasi. Setiap akhir pekan, anak-anak muda berkumpul menancapkan ajir dan menanam bibit. Menjaga pesisir adalah menjaga masa depan anak cucu kami," ungkapnya dengan bangga.`,
-    url: 'https://kabarglobal.portal/berita/kontributor-mangrove-muaragembong',
+    url: 'https://infocepat.portal/berita/kontributor-mangrove-muaragembong',
     imageUrl: 'https://images.unsplash.com/photo-1516214104703-d870798883c5?auto=format&fit=crop&w=1200&q=80',
     source: 'Kabar Nelayan Pesisir (Kontributor)',
     category: 'contributor',
@@ -400,7 +400,7 @@ export class NewsService {
       content: params.content,
       url: window.location.origin + '?article=' + newId,
       imageUrl: params.imageUrl || 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=1200&q=80',
-      source: params.source || `Kabar ${params.author}`,
+      source: params.source || `Kontributor ${params.author}`,
       category: params.category || 'contributor',
       author: params.author,
       authorId: params.authorId,
@@ -494,6 +494,7 @@ export class NewsService {
               entertainment: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80',
               science: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=1200&q=80',
               world: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80',
+              contributor: 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=1200&q=80',
               all: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80'
             };
 

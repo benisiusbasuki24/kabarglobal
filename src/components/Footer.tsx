@@ -24,10 +24,10 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="md:col-span-2 space-y-3">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-black text-sm">
-                K
+                I
               </div>
               <span className="text-base font-extrabold text-slate-900 dark:text-white">
-                Kabar<span className="text-indigo-600 dark:text-indigo-400">Global</span>
+                INFO<span className="text-indigo-600 dark:text-indigo-400">CEPAT</span>
               </span>
             </div>
             <p className="max-w-md text-xs leading-relaxed text-slate-600 dark:text-slate-400">
@@ -123,7 +123,7 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         <div className="border-t border-slate-200 dark:border-slate-800/80 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px]">
-          <p>© {new Date().getFullYear()} KabarGlobal. Hak Cipta Dilindungi Undang-Undang.</p>
+          <p>© {new Date().getFullYear()} INFOCEPAT. Hak Cipta Dilindungi Undang-Undang.</p>
           <p className="flex items-center gap-1 text-slate-400">
             Dibuat untuk jurnalisme cepat, akurat, dan berimbang
           </p>

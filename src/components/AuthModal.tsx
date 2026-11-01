@@ -103,7 +103,7 @@ export const AuthModal: React.FC = () => {
         <div className="relative px-6 pt-5 pb-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50">
           <div>
             <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-              {authModalMode === 'login' ? 'Masuk ke KabarGlobal' : 'Pendaftaran Akun Baru'}
+              {authModalMode === 'login' ? 'Masuk ke INFOCEPAT' : 'Pendaftaran Akun Baru'}
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               {authModalMode === 'login' 

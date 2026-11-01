@@ -108,14 +108,14 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="flex items-center gap-2.5 text-left group"
             >
               <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-purple-600 flex items-center justify-center text-white font-black text-lg shadow-md shadow-indigo-600/30 group-hover:scale-105 transition-transform">
-                K
+                I
               </div>
               <div className="hidden min-[380px]:block">
-                <span className="text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
-                  Kabar<span className="text-indigo-600 dark:text-indigo-400">Global</span>
+                <span className="text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-0.5">
+                  INFO<span className="text-indigo-600 dark:text-indigo-400">CEPAT</span>
                 </span>
                 <span className="text-[10px] text-slate-400 font-medium block leading-none">
-                  Portal Berita Real-Time Dunia
+                  Portal Berita Real-Time Terkini & Cepat
                 </span>
               </div>
             </button>

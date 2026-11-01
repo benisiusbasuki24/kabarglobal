@@ -8,7 +8,7 @@ export interface ReaderProfile {
   lastUpdated: string;
 }
 
-const STORAGE_KEY = 'kabarglobal_reader_algorithm_profile';
+const STORAGE_KEY = 'infocepat_reader_algorithm_profile';
 
 export class ReaderAlgorithm {
   /**
@@ -114,9 +114,10 @@ export class ReaderAlgorithm {
       let scoreA = 0;
       let scoreB = 0;
 
-      // 1. Detik.com headline priority bonus (+100 points)
-      if (a.isDetikHeadline || a.source.toLowerCase().includes('detik')) scoreA += 100;
-      if (b.isDetikHeadline || b.source.toLowerCase().includes('detik')) scoreB += 100;
+      // 1. Detik.com headlines & Contributor news priority bonus (+100 points)
+      // Contributor news and Detik headlines air together with highest priority
+      if (a.isDetikHeadline || a.source.toLowerCase().includes('detik') || a.isContributor || a.category === 'contributor') scoreA += 100;
+      if (b.isDetikHeadline || b.source.toLowerCase().includes('detik') || b.isContributor || b.category === 'contributor') scoreB += 100;
 
       // 2. Reader category affinity bonus
       const aVisits = profile.categoryVisits[a.category] || 0;

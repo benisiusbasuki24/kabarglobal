@@ -22,7 +22,7 @@ interface BookmarkContextType {
 }
 
 const BookmarkContext = createContext<BookmarkContextType | undefined>(undefined);
-const LOCAL_STORAGE_KEY = 'kabarglobal_guest_bookmarks';
+const LOCAL_STORAGE_KEY = 'infocepat_guest_bookmarks';
 
 export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, openLoginModal } = useAuth();

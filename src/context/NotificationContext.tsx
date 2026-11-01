@@ -96,7 +96,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
               title: data.title || 'Breaking News Populer',
               summary: data.summary || '',
               category: data.category || 'world',
-              source: data.source || 'KabarGlobal',
+              source: data.source || 'INFOCEPAT',
               trendingScore: data.trendingScore || 95,
               createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : new Date().toISOString(),
               isRead: false

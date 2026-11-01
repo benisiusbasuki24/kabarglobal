@@ -27,7 +27,7 @@ export const SpotlightBillboardAd: React.FC<SpotlightBillboardAdProps> = ({ ad }
           </h3>
 
           <p className="text-xs sm:text-sm text-slate-300 max-w-xl leading-relaxed">
-            Prakarsa dan produk unggulan dari mitra resmi {ad.sponsorName}. Dapatkan akses penawaran khusus bagi pembaca setia KabarGlobal.
+            Prakarsa dan produk unggulan dari mitra resmi {ad.sponsorName}. Dapatkan akses penawaran khusus bagi pembaca setia INFOCEPAT.
           </p>
 
           <div className="pt-2">

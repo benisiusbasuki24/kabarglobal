@@ -15,11 +15,11 @@ import {
 import { doc, getDoc, getDocs, setDoc, updateDoc, collection, query, where, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import { UserProfile, UserRole, ContributorStatus } from '../types';
 
-async function hashPassword(password: string): Promise<string> {
+async function hashPassword(password: string, customSalt: string = '_infocepat_salt_2026'): Promise<string> {
   if (typeof window !== 'undefined' && window.crypto && window.crypto.subtle) {
     try {
       const encoder = new TextEncoder();
-      const data = encoder.encode(password + '_kabarglobal_salt_2026');
+      const data = encoder.encode(password + customSalt);
       const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
@@ -109,7 +109,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Persistent Local Admin Session
   const [isLocalAdminLoggedIn, setIsLocalAdminLoggedIn] = useState<boolean>(() => {
     try {
-      return localStorage.getItem('kabarglobal_local_admin_session') === 'true';
+      return localStorage.getItem('infocepat_local_admin_session') === 'true';
     } catch {
       return false;
     }
@@ -157,7 +157,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       } else {
         try {
-          const savedSession = localStorage.getItem('kabarglobal_user_session');
+          const savedSession = localStorage.getItem('infocepat_user_session');
           if (savedSession) {
             const parsed = JSON.parse(savedSession) as UserProfile;
             if (parsed && parsed.userId) {
@@ -174,7 +174,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 if (freshSnap.exists()) {
                   const freshProfile = freshSnap.data() as UserProfile;
                   setProfile(freshProfile);
-                  localStorage.setItem('kabarglobal_user_session', JSON.stringify(freshProfile));
+                  localStorage.setItem('infocepat_user_session', JSON.stringify(freshProfile));
                 }
               }).catch(() => {});
             }
@@ -268,7 +268,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (usernameInput.trim() === 'bencreative' && passwordInput === 'BangsaT220483') {
       setIsLocalAdminLoggedIn(true);
       try {
-        localStorage.setItem('kabarglobal_local_admin_session', 'true');
+        localStorage.setItem('infocepat_local_admin_session', 'true');
       } catch (e) {
         console.warn('Storage error', e);
       }
@@ -289,7 +289,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logoutLocalAdmin = () => {
     setIsLocalAdminLoggedIn(false);
     try {
-      localStorage.removeItem('kabarglobal_local_admin_session');
+      localStorage.removeItem('infocepat_local_admin_session');
     } catch (e) {
       console.warn('Storage error', e);
     }
@@ -365,7 +365,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       // Successfully authenticated!
       try {
-        localStorage.setItem('kabarglobal_user_session', JSON.stringify(userData));
+        localStorage.setItem('infocepat_user_session', JSON.stringify(userData));
       } catch (e) {
         console.warn('Storage error:', e);
       }
@@ -465,7 +465,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Persist session to localStorage
     try {
-      localStorage.setItem('kabarglobal_user_session', JSON.stringify(newProf));
+      localStorage.setItem('infocepat_user_session', JSON.stringify(newProf));
     } catch (e) {
       console.warn('Storage save error:', e);
     }
@@ -521,7 +521,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = async () => {
     logoutLocalAdmin();
     try {
-      localStorage.removeItem('kabarglobal_user_session');
+      localStorage.removeItem('infocepat_user_session');
     } catch (e) {
       console.warn('Storage error:', e);
     }

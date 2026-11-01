@@ -15,7 +15,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ article, isOpen, onClose
 
   const shareUrl = window.location.origin + '?article=' + article.id;
   const shareTitle = article.title;
-  const shareText = `Baca berita terbaru: "${shareTitle}" via KabarGlobal`;
+  const shareText = `Baca berita terbaru: "${shareTitle}" via INFOCEPAT`;
 
   const handleCopy = async () => {
     try {

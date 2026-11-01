@@ -30,7 +30,7 @@ import { Newspaper, SearchX, RefreshCw, Sparkles, Target, Zap, CheckCircle2 } fr
 function NewsPortalMain() {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     try {
-      const saved = localStorage.getItem('kabarglobal_theme');
+      const saved = localStorage.getItem('infocepat_theme');
       if (saved) return saved === 'dark';
       return window.matchMedia('(prefers-color-scheme: dark)').matches;
     } catch {
@@ -68,10 +68,10 @@ function NewsPortalMain() {
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('kabarglobal_theme', 'dark');
+      localStorage.setItem('infocepat_theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('kabarglobal_theme', 'light');
+      localStorage.setItem('infocepat_theme', 'light');
     }
   }, [darkMode]);
 
@@ -111,23 +111,27 @@ function NewsPortalMain() {
     }
   };
 
-  // Sort articles based on user preference, retaining Detik priority
+  // Sort articles based on user preference: Contributor news and Detik headlines air at the top chronologically
   const sortedArticles = useMemo(() => {
     const list = [...articles];
     if (sortBy === 'trending') {
       return list.sort((a, b) => {
-        if (a.isDetikHeadline && !b.isDetikHeadline) return -1;
-        if (!a.isDetikHeadline && b.isDetikHeadline) return 1;
+        const isPriorityA = a.isDetikHeadline || a.isContributor;
+        const isPriorityB = b.isDetikHeadline || b.isContributor;
+        if (isPriorityA && !isPriorityB) return -1;
+        if (!isPriorityA && isPriorityB) return 1;
         return (b.trendingScore || 0) - (a.trendingScore || 0);
       });
     }
     if (sortBy === 'discussed') {
       return list.sort((a, b) => (b.commentsCount || 0) - (a.commentsCount || 0));
     }
+    // 'latest': Berita kontributor dan berita headline tayang di bagian atas sesuai urutan waktu (jam tayang berbagai sumber)
     return list.sort((a, b) => {
-      // Prioritize Detik headlines first
-      if (a.isDetikHeadline && !b.isDetikHeadline) return -1;
-      if (!a.isDetikHeadline && b.isDetikHeadline) return 1;
+      const isPriorityA = a.isDetikHeadline || a.isContributor;
+      const isPriorityB = b.isDetikHeadline || b.isContributor;
+      if (isPriorityA && !isPriorityB) return -1;
+      if (!isPriorityA && isPriorityB) return 1;
       return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
     });
   }, [articles, sortBy]);
