@@ -1,0 +1,157 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        (request.auth.token.email == 'benisius.rb@gmail.com' && request.auth.token.email_verified == true)
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['userId', 'email', 'displayName', 'role']) &&
+             data.keys().hasOnly(['userId', 'email', 'displayName', 'role', 'contributorStatus', 'contributorBio', 'organization', 'passwordHash', 'createdAt', 'updatedAt']) &&
+             data.userId is string && data.userId.size() <= 128 &&
+             data.email is string && data.email.size() <= 200 &&
+             data.displayName is string && data.displayName.size() <= 100 &&
+             (data.role in ['reader', 'contributor', 'advertiser', 'admin']) &&
+             (!('passwordHash' in data) || (data.passwordHash is string && data.passwordHash.size() <= 128));
+    }
+
+    function isValidArticle(data) {
+      return data.keys().hasAll(['id', 'title', 'description', 'content', 'source', 'category', 'author', 'authorId']) &&
+             data.keys().hasOnly(['id', 'title', 'description', 'content', 'url', 'imageUrl', 'source', 'category', 'author', 'authorId', 'readingTime', 'publishedAt', 'createdAt', 'commentsCount', 'isTrending', 'trendingScore']) &&
+             data.id is string && data.id.size() <= 128 &&
+             data.title is string && data.title.size() <= 300 &&
+             data.description is string && data.description.size() <= 600 &&
+             data.content is string && data.content.size() <= 30000 &&
+             data.source is string && data.source.size() <= 100 &&
+             data.category is string && data.category.size() <= 50 &&
+             data.author is string && data.author.size() <= 100 &&
+             data.authorId is string && data.authorId.size() <= 128;
+    }
+
+    function isValidBookmark(data) {
+      return data.keys().hasAll(['id', 'userId', 'articleId', 'title', 'url', 'source', 'category']) &&
+             data.keys().hasOnly(['id', 'userId', 'articleId', 'title', 'url', 'imageUrl', 'source', 'category', 'publishedAt', 'createdAt']) &&
+             data.id is string && data.id.size() <= 128 &&
+             data.userId is string && data.userId.size() <= 128 &&
+             data.articleId is string && data.articleId.size() <= 300 &&
+             data.title is string && data.title.size() <= 400 &&
+             data.url is string && data.url.size() <= 1500 &&
+             data.source is string && data.source.size() <= 150 &&
+             data.category is string && data.category.size() <= 60;
+    }
+
+    function isValidComment(data) {
+      return data.keys().hasAll(['id', 'articleId', 'userId', 'userName', 'content', 'likes']) &&
+             data.keys().hasOnly(['id', 'articleId', 'userId', 'userName', 'userEmail', 'content', 'likes', 'createdAt', 'updatedAt']) &&
+             data.id is string && data.id.size() <= 128 &&
+             data.articleId is string && data.articleId.size() <= 300 &&
+             data.userId is string && data.userId.size() <= 128 &&
+             data.userName is string && data.userName.size() <= 100 &&
+             data.content is string && data.content.size() >= 1 && data.content.size() <= 1000 &&
+             data.likes is number;
+    }
+
+    function isValidAd(data) {
+      return data.keys().hasAll(['id', 'title', 'sponsorName', 'imageUrl', 'targetUrl', 'placement', 'status', 'submittedBy']) &&
+             data.keys().hasOnly(['id', 'title', 'sponsorName', 'imageUrl', 'targetUrl', 'placement', 'status', 'durationDays', 'impressionsTotal', 'impressionsUsed', 'remainingQuota', 'price', 'submittedBy', 'approvedBy', 'createdAt', 'updatedAt']) &&
+             data.id is string && data.id.size() <= 128 &&
+             data.title is string && data.title.size() <= 200 &&
+             data.sponsorName is string && data.sponsorName.size() <= 150 &&
+             data.imageUrl is string && data.imageUrl.size() <= 1500 &&
+             data.targetUrl is string && data.targetUrl.size() <= 1500 &&
+             (data.placement in ['top_banner', 'sidebar', 'in_feed', 'breaking_ticker', 'article_interstitial', 'footer_banner', 'popup_billboard']) &&
+             (data.status in ['pending', 'approved', 'rejected']) &&
+             data.submittedBy is string && data.submittedBy.size() <= 128;
+    }
+
+    function isValidTrending(data) {
+      return data.keys().hasAll(['id', 'articleId', 'title', 'category', 'source']) &&
+             data.keys().hasOnly(['id', 'articleId', 'title', 'summary', 'category', 'source', 'trendingScore', 'createdAt']) &&
+             data.id is string && data.id.size() <= 128 &&
+             data.articleId is string && data.articleId.size() <= 300 &&
+             data.title is string && data.title.size() <= 400 &&
+             data.category is string && data.category.size() <= 60 &&
+             data.source is string && data.source.size() <= 150;
+    }
+
+    // Users collection (Reader, Contributor, Advertiser, Admin)
+    match /users/{userId} {
+      allow get, list: if true;
+      allow create: if isValidUser(incoming()) && incoming().userId == userId;
+      allow update: if isValidUser(incoming()) && incoming().userId == userId;
+      allow delete: if true;
+    }
+
+    // Articles collection (Contributor articles published directly to portal)
+    match /articles/{articleId} {
+      allow get, list: if true;
+      allow create: if isValidArticle(incoming());
+      allow update: if isValidArticle(incoming());
+      allow delete: if isAdmin() || isSignedIn();
+    }
+
+    // Bookmarks collection
+    match /bookmarks/{bookmarkId} {
+      allow get, list: if true;
+      allow create: if isValidBookmark(incoming());
+      allow update: if isValidBookmark(incoming());
+      allow delete: if true;
+    }
+
+    // Comments collection
+    match /comments/{commentId} {
+      allow get, list: if true;
+      allow create: if isValidComment(incoming());
+      allow update: if true;
+      allow delete: if true;
+    }
+
+    // Advertisements collection (7 slots, packages, admin approval)
+    match /ads/{adId} {
+      allow get, list: if true;
+      allow create: if isValidAd(incoming());
+      allow update: if true;
+      allow delete: if isAdmin() || isSignedIn();
+    }
+
+    // Trending notifications collection
+    match /trending_notifications/{notificationId} {
+      allow get, list: if true;
+      allow create, update, delete: if true;
+    }
+
+    // Admins collection
+    match /admins/{userId} {
+      allow read, write: if true;
+    }
+  }
+}

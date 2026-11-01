@@ -1,0 +1,7 @@
+{
+  "name": "KabarGlobal - Portal Berita Terkini & Populer",
+  "description": "Portal berita real-time dengan kategori lengkap, breaking news, sistem bookmark, komentar interaktif, persetujuan iklan admin, dan mode gelap.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
